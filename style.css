@@ -1,0 +1,47 @@
+/* @override http://localhost:8000/style.css */
+
+body {
+	font-family: Helvetica;
+}
+
+#wrapper {
+	width: 300px;
+	text-align: center;
+}
+
+.counter {
+	text-align: center;
+	margin-bottom: 25px;
+}
+.counter .message {
+	color: #666;
+}
+#number {
+	font-size: 50px;
+	font-weight: bold;
+}
+
+.button {
+	display: inline-block;
+	width: 100px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 25px;
+	border: 1px solid #000;
+	border-radius: 5px;
+	font-weight: bold;
+}
+#decr_button {
+	color: #a40f0f;
+	border-color: #e9bbbc;
+	background: -webkit-linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.6), rgba(255,255,255,0)), -webkit-linear-gradient(#e94a4d, #e94a4d);
+}
+#incr_button {
+	color: #0a732c;
+	border-color: #15a545;
+	background: -webkit-linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.6), rgba(255,255,255,0)), -webkit-linear-gradient(#15a545, #15a545);
+}
+
+#test {
+	background-color: #15a545;
+}
