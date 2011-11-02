@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/javascripts/main.js"></script>
+  <link rel="stylesheet" href="/static/stylesheets/style.css" />
+  
+  <meta name="viewport" content="user-scalable=no, width=device-width" />
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="undo-wrapper">
+      <div id="undo-bar">
+        <div class="message">In: 0, Out: 0</div>
+        <a id="undo-button" href="#">Undo</a>
+        <hr class="clear-bar" />
+      </div>
+    </div>
+    <div class="counters">
+      <div class="minor-counter first">
+        <div class="label">In</div>
+        <div id="in-counter" class="number">0</div>
+      </div>
+      <div class="major-counter">
+        <div class="label">Total</div>
+        <div id="total-counter" class="number">0</div>
+        <div class="suffix">Capacity: 550</div>
+      </div>
+      <div class="minor-counter last">
+        <div class="label">Out</div>
+        <div id="out-counter" class="number">0</div>
+      </div>
+    </div>
+    <div class="carousel">
+      <div class="content">
+        <div id="buttons" class="default">
+          <div class="row">
+            <a href="#" id="incr_button" class="green button"><span class="content">+1</span></a>
+            <a href="#" id="decr_button" class="red button"><span class="content">-1</span></a>
+          </div>
+          <div class="row">
+            <a href="#" id="incr2_button" class="green button"><span class="content">+2</span></a>
+            <a href="#" id="decr2_button" class="red button"><span class="content">-2</span></a>
+          </div>
+          <div class="row">
+            <a href="#" id="incr4_button" class="green button"><span class="content">+4</span></a>
+            <a href="#" id="decr4_button" class="red button"><span class="content">-4</span></a>
+          </div>
+        </div>
+        <div id="phone-numbers">
+          Tom Buckley: 617-721-7532
+        </div>
+      </div>
+    </div>
+    <ul class="carousel-buttons">
+      <li class="active"><a href="#" class="buttons">Clicker</a></li>
+      <li><a href="#" class="phone">Phone Numbers</a></li>
+      <li><a href="#" class="overview">Overview</a></li>
+    </ul>
+    <hr class="carousel-active" />
+    
+    <div class="messages">
+      <div id="messages">
+        <span class="default">No messages</span>
+      </div>
+      <div id="help-button"><a href="#" class="content">Help</span></div>
+      <hr class="clear-bar"/>
+    </div>
+  </div>
+</body>
+</html>

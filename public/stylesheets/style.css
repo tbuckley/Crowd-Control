@@ -1,0 +1,227 @@
+/* @override http://localhost:3000/static/stylesheets/style.css */
+* {
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-user-select: none;
+}
+
+a:link, a:visited {
+	text-decoration: none;
+}
+a:active {
+  color: red;
+}
+.clear-bar {
+	clear: both;
+	height: 0px;
+	width: 0px;
+	border: none;
+}
+
+body {
+	font-family: Helvetica;
+	padding: 0;
+	margin: 0;
+}
+
+#wrapper {
+	text-align: center;
+}
+
+#undo-wrapper {
+  height: 30px;
+}
+
+#undo-bar {
+	background-color: #fffde1;
+	border: 1px solid #bfbea9;
+	border-top: none;
+	margin: 0px 10px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	padding: 2px 10px;
+	margin-bottom: 5px;
+}
+#undo-bar .message {
+	float: left;
+}
+#undo-button {
+	float: right;
+}
+
+.counters {
+	margin-bottom: 10px;
+}
+.minor-counter, .major-counter {
+	display: inline-block;
+	vertical-align: top;
+	padding: 0px 5px;
+	text-align: center;
+}
+.minor-counter.first {
+	padding: 0px;
+}
+.minor-counter.last {
+	padding: 0px;
+}
+.minor-counter {
+	width: 50px;
+}
+.major-counter {
+	width: 150px;
+}
+.minor-counter .label {
+	font-size: 20px;
+	text-transform: lowercase;
+	border-bottom: 1px solid #000;
+}
+.major-counter .label,
+.minor-counter .label {
+	color: #999;
+	font-size: 20px;
+	font-weight: bold;
+	text-transform: lowercase;
+	border-bottom: 1px solid #999;
+	margin-bottom: 5px;
+}
+.major-counter .number {
+	font-weight: bold;
+	font-size: 45px;
+	margin: 0px;
+	padding: 0px;
+	line-height: 34px;
+}
+.major-counter.close .label,
+.major-counter.close .number {
+	color: #e88040;
+}
+.major-counter.over .label,
+.major-counter.over .number {
+	color: #e84040;
+}
+
+.minor-counter .number {
+	font-size: 20px;
+}
+.suffix {
+	margin-top: 5px;
+	color: #CCC;
+	text-transform: lowercase;
+}
+#number {
+	font-size: 50px;
+	font-weight: bold;
+}
+
+.button {
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	font-size: 25px;
+	border: 1px solid #000;
+	border-radius: 10px;
+	font-weight: bold;
+	width: 120px;
+	margin: 4px 10px;
+	padding: 7px 0px;
+	-webkit-box-shadow: inset 1px 1px 2px rgba(255,255,255,0.4), 0px 1px 0px rgba(0,0,0,0.7);
+}
+.red.button {
+	color: #a40f0f;
+	border-color: #b85557;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.0, #e94a4d), color-stop(0, #e97779));
+	text-shadow: 0px 1px 0px #f19799;
+}
+.green.button {
+	color: #0a732c;
+	border-color: #15a545;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.0, #15a545), color-stop(0, #7fe4a1));
+	text-shadow: 0px 1px 0px #66ef94;
+}
+.button.depressed {
+	-webkit-box-shadow: inset 0px 0px 10px #000;
+	border-color: #000;
+}
+
+.messages {
+  padding-left: 60px;
+	text-align: left;
+	position: fixed;
+	bottom: 0px;
+	border-top: 1px solid #333;
+}
+#help-button {
+  position: relative;
+	float: left;
+	width: 60px;
+	right: 60px;
+	margin-left: -100%;
+}
+#help-button .content {
+	display: block;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1.0, #e94a4d), color-stop(0, #e97779));
+	-webkit-box-shadow: inset 1px 1px 2px rgba(255,255,255,0.4);
+	font-size: 19px;
+	font-weight: bold;
+	padding: 3px 0px 5px 0px;
+	text-align: center;
+	text-shadow: 0px 1px 1px #f19799;
+	color: #780204;
+	border-right: 1px solid #666;
+}
+#messages {
+	float: left;
+	position: relative;
+	width: 100%;
+	
+	overflow: hidden;
+	height: 30px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #666), color-stop(1.0, #333));
+}
+#messages .default {
+	padding: 6px 6px;
+	display: block;
+	width: 3000px;
+	color: #BBB;
+	text-shadow: 0px -1px #222;
+	font-style: italic;
+}
+
+#test {
+	color: #f19799;
+}
+
+.carousel {
+	white-space: nowrap;
+	overflow: hidden;
+	width: 100%;
+	
+}
+.carousel > .content {
+	position: relative;
+}
+.carousel .content > div {
+	vertical-align: top;
+	display: inline-block;
+	width: 100%;
+}
+.carousel-buttons {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+.carousel-buttons li {
+	display: inline-block;
+	margin: 10px 6px 0px;
+}
+.carousel-buttons li a {
+	color: #000;
+}
+hr.carousel-active {
+	float: left;
+	border: none;
+	border-bottom: 2px solid #000;
+	width: 0px;
+	position: relative;
+	margin: 0;
+}
