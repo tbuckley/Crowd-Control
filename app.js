@@ -1,7 +1,7 @@
 var express = require('express'),
     socketio = require('socket.io'),
     routes = require('./routes'),
-    EventTracker = require('./eventtracker').EventTracker;
+    EventTracker = require('./eventtracker');
 
 var app = express.createServer();
 var io = socketio.listen(app);
@@ -37,14 +37,22 @@ app.get('/clicker', routes.clicker);
 
 // Socket.IO
 
+
+// Should use http://www.danielbaulig.de/socket-ioexpress/ to ensure socket is authorized
 io.sockets.on('connection', function(socket) {
   console.log('Socket connected!');
   socket.on('register', function(data) {
     var eventId = data.eventId;
     var position = data.position;
     var name = data.name;
-    console.log('['+name+'] Register ('+eventId+', '+position+')');
-    EventTracker.getEvent(eventId).activatePosition(position, name, socket);
+    EventTracker.EventTracker.getEvent(EventTracker.h_h._id, function(e) {
+      if(e) {
+        console.log('Event loaded');
+        e.signupStaffer(EventTracker.h_h.positions[0]._id, 1, 'Tom', socket);
+      } else {
+        console.log('Error loading event.');
+      }
+    });
   });
 });
 

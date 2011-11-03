@@ -99,7 +99,7 @@ $(document).ready(function() {
     capacity = data.capacity;
     $('.major-counter .suffix').text('Capacity: '+capacity);
     updateCapacityIndicator(data.counter);
-    socket.on('update', updateHandler);
+    socket.on('update_counter', updateHandler);
     socket.on('deactivate', deactivateHandler);
   };
   deactivateHandler = function(data) {
@@ -111,30 +111,24 @@ $(document).ready(function() {
   $('.carousel-active').css('left', $('.carousel-buttons .buttons').offset().left - 5);
   $('.carousel-active').css('width', $('.carousel-buttons .buttons').width() + 10);
   $('.carousel-buttons .phone').bind('click', function() {
-    $('.carousel-active').animate({
-      left: $('.carousel-buttons .phone').offset().left - 5,
-      width: $('.carousel-buttons .phone').width() + 10
-    }, 800);
-    $('.carousel .content').animate({
-      left: $('.carousel .content').offset().left - $('#phone-numbers').offset().left
-    }, 800);
+    $('.carousel-active')
+      .css('left', $('.carousel-buttons .phone').offset().left - 5)
+      .css('width', $('.carousel-buttons .phone').width() + 10);
+    $('.carousel .content')
+      .css('left', $('.carousel .content').offset().left - $('#phone-numbers').offset().left);
     return false;
   });
   $('.carousel-buttons .buttons').bind('click', function() {
-    $('.carousel-active').animate({
-      left: $('.carousel-buttons .buttons').offset().left - 5,
-      width: $('.carousel-buttons .buttons').width() + 10
-    }, 800);
-    $('.carousel .content').animate({
-      left: $('.carousel .content').offset().left - $('#buttons').offset().left
-    }, 800);
-    return false;
+    $('.carousel-active')
+      .css('left', $('.carousel-buttons .buttons').offset().left - 5)
+      .css('width', $('.carousel-buttons .buttons').width() + 10);
+    $('.carousel .content')
+      .css('left', $('.carousel .content').offset().left - $('#buttons').offset().left);
   });
   $('.carousel-buttons .overview').bind('click', function() {
-    $('.carousel-active').animate({
-      left: $('.carousel-buttons .overview').offset().left - 5,
-      width: $('.carousel-buttons .overview').width() + 10
-    }, 800);
+    $('.carousel-active')
+      .css('left', $('.carousel-buttons .overview').offset().left - 5)
+      .css('width', $('.carousel-buttons .overview').width() + 10);
     return false;
   });
   

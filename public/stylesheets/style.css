@@ -199,6 +199,8 @@ body {
 }
 .carousel > .content {
 	position: relative;
+	-webkit-transition-property: left;
+	-webkit-transition-duration: 1s;
 }
 .carousel .content > div {
 	vertical-align: top;
@@ -218,6 +220,8 @@ body {
 	color: #000;
 }
 hr.carousel-active {
+  -webkit-transition-property: left, width;
+  -webkit-transition-duration: 1s, 1s;
 	float: left;
 	border: none;
 	border-bottom: 2px solid #000;
