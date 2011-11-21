@@ -1,0 +1,12 @@
+<h3 class="section-head">Your Events</h3>
+<div class="section-body">
+  <ul>
+    {{each(i,event) events}}
+    <li class="event {{if i%2 == 1}}odd{{else}}even{{/if}}">
+      <div class="title">${event.title}</div>
+      <div class="counter">${event.counter}</div>
+    </li>
+    {{/each}}
+  </ul>
+  <a href="#">Add an event</a>
+</div>

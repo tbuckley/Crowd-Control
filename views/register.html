@@ -1,0 +1,18 @@
+<form method="POST" action="/register">
+  {{if errors.length > 0}}
+    {{partial({errors: errors}) "form_errors"}}
+  {{/if}}
+  <div class="form-element">
+    <label for="username">Username</label>
+    <input id="username" type="text" name="username" />
+  </div>
+  <div class="form-element">
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" />
+  </div>
+  <div class="form-element">
+    <label for="password_confirm">Password Confirm</label>
+    <input id="password_confirm" type="password" name="password_confirm" />
+  </div>
+  <input type="submit" name="register" value="Register" />
+</form>
