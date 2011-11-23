@@ -1,0 +1,42 @@
+<form method="POST" action="/event/add">
+  {{if errors.length > 0}}
+    {{partial({errors: errors}) "form_errors"}}
+  {{/if}}
+  <div class="form-element">
+    <label for="event_title">Event Title</label>
+    <input id="event_title" type="text" name="event_title" value="{{if defaults}}${defaults.title}{{/if}}" />
+  </div>
+  <div class="form-element">
+    <label for="capacity">Maximum Capacity</label>
+    <input id="capacity" type="text" name="capacity" value="{{if defaults}}${defaults.capacity}{{/if}}" />
+  </div>
+  <fieldset>
+    <legend>Staff</legend>
+    <div class="description">Enter the staff positions you have as well as the usernames of 
+      your staffers. Only the specified usernames will be able to access this event's clicker.</div>
+    <div class="form-element">
+      <label for="positions">Positions</label>
+      <textarea id="positions" name="positions" rows="5">{{if defaults}}${defaults.positions}{{/if}}</textarea>
+      <div class="help">Enter the staff positions for your event, one per line</div>
+    </div>
+    <div class="form-element">
+      <label for="staffers">Staffers</label>
+      <textarea id="staffers" name="staffers" rows="5">{{if defaults}}${defaults.staffers}{{/if}}</textarea>
+      <div class="help">Enter the usernames of your staffers, one per line</div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Backup</legend>
+    <div class="description">To prevent the capacity count from being lost, 
+      please enter an email address that can be sent the count at the specified interval.</div>
+    <div class="form-element">
+      <label for="email">Email</label>
+      <input id="email" type="text" name="email" value="{{if defaults}}${defaults.email}{{/if}}" />
+    </div>
+    <div class="form-element">
+      <label for="frequency">Frequency (in minutes)</label>
+      <input id="frequency" type="text" name="frequency" value="{{if defaults}}${defaults.frequency}{{/if}}" />
+    </div>
+  </fieldset>
+  <input type="submit" name="add" value="Add Event" />
+</form>
