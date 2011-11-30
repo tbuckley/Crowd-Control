@@ -3,41 +3,9 @@ initialize: {in_counter:, out_counter:, counter:, capacity:}
 update_counter: {counter:}
 update_position_counter: {in_counter:, out_counter:}
 */
-var mongoose = require('mongoose'),
-    db = mongoose.connect('mongodb://localhost/crowdcontrol', function(err) {
-      if (err) throw err;
-    });
-
-mongoose.connection.on('open', function() {
-  console.log('Mongoose is connected.');
-});
+var models = require('../database').models;
 
 var SAVE_RATE = 10; // In seconds
-
-var EventSchemas = function() {
-  var Schema = mongoose.Schema,
-      ObjectId = Schema.ObjectId;
-  
-  var Position = new Schema({
-    title       : String
-  });
-  var Snapshot = new Schema({
-    timestamp   : { type: Date, 'default': Date.now },
-    position    : ObjectId,
-    in_counter  : Number,
-    out_counter : Number
-  });
-  var Event = new Schema({
-    title       : String,
-    capacity    : Number,
-    positions   : [Position],
-    snapshots   : [Snapshot]
-  });
-  
-  return {
-    Event: db.model('Event', Event)
-  };
-}();
 
 var EventPosition = function() {
   function EventPosition(id, title, event, in_counter, out_counter) {
@@ -53,6 +21,9 @@ var EventPosition = function() {
     return this.num_staffers > 0;
   };
   EventPosition.prototype.addStaffer = function(staffer_id, name, socket) {
+    staffer_id = this.num_staffers; // @TODO: Replace
+    
+    console.log('Adding staffer: ('+staffer_id+', '+name+') to ('+this.title+', '+this.id+')');
     this.staffers[staffer_id] = {
       id: staffer_id,
       name: name,
@@ -73,7 +44,7 @@ var EventPosition = function() {
     // });
     
     // Let socket know it's ready
-    socket.emit('activate', {
+    socket.emit('initialize', {
       in_counter: this.in_counter,
       out_counter: this.out_counter,
       counter: this.event.counter,
@@ -122,11 +93,12 @@ var EventTracker = function() {
   EventTracker.events = {};
   EventTracker.getEvent = function(id, callback) {
     if(EventTracker.events[id] === undefined) {
-      EventSchemas.Event.findById(id, function(err, doc) {
+      models.Event.findById(id, function(err, doc) {
         if (!err) {
           var e = new EventTracker();
           e.load(doc);
-          console.log('Event loaded: ('+e.title+', '+e.capacity+')');
+          e.register();
+          //console.log('Event loaded: ('+e.title+', '+e.capacity+')');
           callback(e);
         } else {
           console.log(err);
@@ -153,6 +125,7 @@ var EventTracker = function() {
   // Position management
 
   EventTracker.prototype.signupStaffer = function(position_id, staffer_id, staffer_name, socket) {
+    console.log(position_id);
     this.positions[position_id].addStaffer(staffer_id, staffer_name, socket);
     return this;
   };
@@ -216,7 +189,7 @@ var EventTracker = function() {
     this.counter = in_counter - out_counter;
     this.id = db_object._id;
     this.db_object = db_object;
-    this.startSaving();
+    //this.startSaving();
     return this;
   };
 
@@ -244,7 +217,7 @@ var EventTracker = function() {
     var that = this;
     this.db_object.save(function(err) {
       if(err) {console.log(err);}
-      else {EventSchemas.Event.find({_id: that.db_object._id}, function(err, result) {console.log("Saving:",result);});}
+      else {models.Event.find({_id: that.db_object._id}, function(err, result) {console.log("Saving:",result);});}
       if(complete) {complete();}
     });
     return this;
@@ -253,26 +226,9 @@ var EventTracker = function() {
   return EventTracker;
 }();
 
-// Initialize db
-EventSchemas.Event.findOne({title: 'Heaven & Hell'}, function(err, doc) {
-  console.log(doc);
-  exports.h_h = doc;
+models.Event.findOne({title: 'Heaven & Hell'}, function(err, doc) {
+  if(err) {console.log(err);}
+  else {exports.h_h = doc;}
 });
-// EventSchemas.Event.remove({}, function(err) {
-//   if (err) console.log(err);
-//   else {
-//     var h_h = new EventSchemas.Event({
-//       title: 'Heaven & Hell',
-//       capacity: 100,
-//       positions: [{title: 'Entrance'}, {title: 'Exit'}],
-//       snapshots: []
-//     });
-//     h_h.save(function(err, result) {
-//       if (err) console.log("Error: "+err);
-//       else {EventSchemas.Event.find({}, function(err, result) {console.log(result);});}
-//     });
-//     exports.h_h = h_h;
-//   }
-// });
 
 exports.EventTracker = EventTracker;

@@ -1,25 +1,19 @@
-<!DOCTYPE html>
-</html>
-<head>
-</head>
-
-<body>
-<div id="wrapper">
-  <form method="POST" action="/">
-    <div class="form-element">
-      <label for="event">Event</label>
-      <input id="event" type="text" name="event" />
-    </div>
-    <div class="form-element">
-      <label for="position">Position</label>
-      <input id="position" type="text" name="position" />
-    </div>
-    <div class="form-element">
-      <label for="name">Name</label>
-      <input id="name" type="text" name="name" />
-    </div>
-    <input type="submit" name="login" value="Login" />
-  </form>
-</div>
-</body>
-</html>
+<form method="POST" action="/">
+  
+  {{if errors.length > 0}}
+    {{partial({errors: errors}) "form_errors"}}
+  {{/if}}
+  <div class="form-element">
+    <label for="username">Username</label>
+    <input id="username" type="text" name="username" />
+  </div>
+  <div class="form-element">
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" />
+  </div>
+  <input type="submit" name="login" value="Login" />
+  or
+  <a href="/register">Register</a> 
+  
+  <!--div class="description"><span class="focus">CrowdControl helps you monitor capacity at your event.</span> It synchronizes the total occupancy counter across multiple web-enabled devices (laptops, desktops, smartphones) so that each staffer knows the exact count. This allows the maximum number of people to enjoy the event without the risk of running over capacity.</div-->
+</form>

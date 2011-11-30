@@ -3,64 +3,95 @@
 <head>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-  <script type="text/javascript" src="/static/javascripts/main.js"></script>
-  <link rel="stylesheet" href="/static/stylesheets/style.css" />
+  <script type="text/javascript" src="/javascripts/main.js"></script>
+  <link rel="stylesheet" href="/stylesheets/style.css" />
   
   <meta name="viewport" content="user-scalable=no, width=device-width" />
 </head>
 
-<body>
-  <div id="wrapper">
-    <div id="undo-wrapper">
-      <div id="undo-bar">
+<body class="mobile">
+<div id="wrapper">
+  <div id="clicker-page">
+    <div id="undo-bar">
+      <div class="container">
         <div class="message">In: 0, Out: 0</div>
-        <a id="undo-button" href="#">Undo</a>
+        <div class="controls">
+          <a id="undo-button" href="#">Undo</a>
+        </div>
         <hr class="clear-bar" />
       </div>
-    </div>
-    <div class="counters">
-      <div class="minor-counter first">
+    </div> <!-- /undo-bar -->
+
+    <div id="counters">
+      <div id="in-counter" class="counter minor first">
         <div class="label">In</div>
-        <div id="in-counter" class="number">0</div>
+        <div class="number">0</div>
       </div>
-      <div class="major-counter">
+      <div id="total-counter" class="counter major">
         <div class="label">Total</div>
-        <div id="total-counter" class="number">0</div>
-        <div class="suffix">Capacity: 550</div>
+        <div class="number">0</div>
+        <div class="capacity">Capacity: <span class="value">550</span></div>
       </div>
-      <div class="minor-counter last">
+      <div id="out-counter" class="counter minor last">
         <div class="label">Out</div>
-        <div id="out-counter" class="number">0</div>
+        <div class="number">0</div>
       </div>
-    </div>
+    </div> <!-- /counters -->
+
     <div class="carousel">
-      <div class="content">
-        <div id="buttons" class="default">
+      <ol class="panels">
+        <!-- clickers -->
+        <li class="default">
           <div class="row">
-            <a href="#" id="incr_button" class="green button"><span class="content">+1</span></a>
-            <a href="#" id="decr_button" class="red button"><span class="content">-1</span></a>
+            <a id="add-1-button" class="button green"><span class="content">+1</span></a>
+            <a id="sub-1-button" class="button red"><span class="content">-1</span></a>
           </div>
           <div class="row">
-            <a href="#" id="incr2_button" class="green button"><span class="content">+2</span></a>
-            <a href="#" id="decr2_button" class="red button"><span class="content">-2</span></a>
+            <a id="add-2-button" class="button green"><span class="content">+2</span></a>
+            <a id="sub-2-button" class="button red"><span class="content">-2</span></a>
           </div>
           <div class="row">
-            <a href="#" id="incr4_button" class="green button"><span class="content">+4</span></a>
-            <a href="#" id="decr4_button" class="red button"><span class="content">-4</span></a>
+            <a id="add-4-button" class="button green"><span class="content">+4</span></a>
+            <a id="sub-4-button" class="button red"><span class="content">-4</span></a>
           </div>
-        </div>
-        <div id="phone-numbers">
-          Tom Buckley: 617-721-7532
-        </div>
+        </li>
+        <!-- phone numbers -->
+        <li>
+          <div class="phone-numbers">
+            <div class="row header">
+              <div class="name">Name</div>
+              <div class="phone">Phone #</div>
+              <hr class="clear-bar" />
+            </div>
+            <div class="row">
+              <div class="name">HUPD</div>
+              <div class="phone">617-123-4567</div>
+              <hr class="clear-bar" />
+            </div>
+            <div class="row last">
+              <div class="name">Fire Department</div>
+              <div class="phone">911</div>
+              <hr class="clear-bar" />
+            </div>
+          </div>
+        </li>
+        <!-- overview -->
+        <li>
+          Overview page.
+        </li>
+      </ol> <!-- /panels -->
+    
+      <dv class="buttons">
+        <ol class="links">
+          <li><a href="#">Clicker</a></li>
+          <li><a href="#">Phone Numbers</a></li>
+          <li><a href="#">Overview</a></li>
+        </ol>
+        <hr class="active-indicator" />
       </div>
     </div>
-    <ul class="carousel-buttons">
-      <li class="active"><a href="#" class="buttons">Clicker</a></li>
-      <li><a href="#" class="phone">Phone Numbers</a></li>
-      <li><a href="#" class="overview">Overview</a></li>
-    </ul>
-    <hr class="carousel-active" />
-    
+
+    <!--
     <div class="messages">
       <div id="messages">
         <span class="default">No messages</span>
@@ -68,6 +99,16 @@
       <div id="help-button"><a href="#" class="content">Help</span></div>
       <hr class="clear-bar"/>
     </div>
+    -->
+  </div> <!-- /clicker-page -->
+  <div id="positions-page">
+    <div class="description">Please select your position:</div>
   </div>
+</div> <!-- /wrapper -->
+
+<div id="loading-screen">
+  <div class="background"></div>
+  <div class="message">You must have javascript enabled</div>
+</div>
 </body>
 </html>

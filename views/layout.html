@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 </html>
 <head>
+  <link href='http://fonts.googleapis.com/css?family=Josefin+Sans:100,400,100italic|Yanone+Kaffeesatz:200,300' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
 </head>
 
 <body class="desktop">
 <div id="wrapper">
   <div id="header">
+    <div class="user">
+      {{if user}}
+        Welcome, <strong>${user.username}</strong>! <a href="/logout">Logout</a>
+      {{else}}
+        <a href="/">Login</a>
+      {{/if}}
+    </div>
     <h1 id="title"><span class="heavy">Crowd</span><span class="light">Control</span></h1>
+    <hr class="separator" />
   </div> <!-- /header -->
-  
+  <div id="content">
   {{html body}}
+  </div>
 </div>
 </body>
 </html>

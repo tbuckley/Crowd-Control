@@ -1,12 +1,26 @@
-<h3 class="section-head">Your Events</h3>
-<div class="section-body">
-  <ul>
-    {{each(i,event) events}}
-    <li class="event {{if i%2 == 1}}odd{{else}}even{{/if}}">
-      <div class="title">${event.title}</div>
-      <div class="counter">${event.counter}</div>
-    </li>
-    {{/each}}
-  </ul>
-  <a href="#">Add an event</a>
+<div class="section">
+  <h3 class="section-head">Your Events</h3>
+  <div class="section-body">
+      {{each(i,event) events}}
+      <div class="event {{if i%2 == 1}}odd{{else}}even{{/if}}">
+        {{if event.owner}}
+          <ul class="links">
+            <li><a href="/event/${event.id}/edit">Edit</a></li>
+            <li><a href="/event/${event.id}/delete">Delete</a></li>
+          </ul>
+        {{/if}}
+        <a href="/event/${event.id}/clicker" class="event-display">
+          <div class="left">
+            <div class="title">${event.title}</div>
+            <div class="date">Capacity: ${event.capacity}</div>
+          </div>
+          <div class="right">
+            <div class="counter">${event.counter}</div>
+          </div>
+          <hr class="clear-bar" />
+        </a>
+      </div>
+      {{/each}}
+    <a href="/event/add">Add an event</a>
+  </div>
 </div>

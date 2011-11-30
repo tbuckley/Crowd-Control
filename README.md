@@ -5,9 +5,9 @@ Crowd control allows you to monitor capacity across multiple entrances/exits in 
 
 Installation
 ------------
-To install, use npm to download the following modules: express (MVC library), jqtpl (templating system), socket.io (for real-time updates), mongoose (MongoDB interface). You can do this all at once with the following command:
+To install, use npm to download the following modules: express (MVC library), jqtpl (templating system), socket.io (for real-time updates), mongoose (MongoDB interface), connect (which ExpressJS is based on), hashlib (for MD5 hashes), express-validator (input validation and sanitization). You can do this all at once with the following command:
 
-    npm install express jqtpl socket.io mongoose
+    npm install express jqtpl socket.io mongoose connect hashlib express-validator validator
 
 You will also need to install MongoDB if you haven't already. You can download it from http://www.mongodb.org/downloads or using [Homebrew](http://mxcl.github.com/homebrew/) on Mac:
 

@@ -1,10 +1,10 @@
-<form method="POST" action="/event/add">
+<form method="POST" action="${action}">
   {{if errors.length > 0}}
     {{partial({errors: errors}) "form_errors"}}
   {{/if}}
   <div class="form-element">
-    <label for="event_title">Event Title</label>
-    <input id="event_title" type="text" name="event_title" value="{{if defaults}}${defaults.title}{{/if}}" />
+    <label for="event-title">Event Title</label>
+    <input id="event-title" type="text" name="event-title" value="{{if defaults}}${defaults.title}{{/if}}" />
   </div>
   <div class="form-element">
     <label for="capacity">Maximum Capacity</label>
@@ -30,13 +30,13 @@
     <div class="description">To prevent the capacity count from being lost, 
       please enter an email address that can be sent the count at the specified interval.</div>
     <div class="form-element">
-      <label for="email">Email</label>
-      <input id="email" type="text" name="email" value="{{if defaults}}${defaults.email}{{/if}}" />
+      <label for="backup-email">Email</label>
+      <input id="backup-email" type="text" name="backup-email" value="{{if defaults}}${defaults.email}{{/if}}" />
     </div>
     <div class="form-element">
-      <label for="frequency">Frequency (in minutes)</label>
-      <input id="frequency" type="text" name="frequency" value="{{if defaults}}${defaults.frequency}{{/if}}" />
+      <label for="backup-rate">Email Rate (in minutes)</label>
+      <input id="backup-rate" type="text" name="backup-rate" value="{{if defaults}}${defaults.frequency}{{/if}}" />
     </div>
   </fieldset>
-  <input type="submit" name="add" value="Add Event" />
+  <input type="submit" name="submit" value="${submit}" />
 </form>
