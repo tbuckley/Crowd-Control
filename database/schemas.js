@@ -19,11 +19,16 @@ var Position = new Schema({
   title       : String
 });
 
-var Snapshot = new Schema({
-  timestamp   : { type: Date, 'default': Date.now },
-  position    : ObjectId,
+var PositionSnapshot = new Schema({
+  position   : ObjectId,
   in_counter  : Number,
   out_counter : Number
+});
+
+var Snapshot = new Schema({
+  timestamp   : { type: Date, 'default': Date.now },
+  positions   : [PositionSnapshot],
+  counter     : Number
 });
 
 var Event = new Schema({
@@ -39,5 +44,6 @@ var Event = new Schema({
 
 exports.User = User;
 exports.Position = Position;
+exports.PositionSnapshot = PositionSnapshot;
 exports.Snapshot = Snapshot;
 exports.Event = Event;

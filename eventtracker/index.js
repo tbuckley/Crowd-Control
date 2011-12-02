@@ -5,7 +5,7 @@ update_position_counter: {in_counter:, out_counter:}
 */
 var models = require('../database').models;
 
-var SAVE_RATE = 10; // In seconds
+var SAVE_RATE = 5; // In seconds
 
 var EventPosition = function() {
   function EventPosition(id, title, event, in_counter, out_counter) {
@@ -81,6 +81,7 @@ var EventPosition = function() {
 }();
 
 
+
 var EventTracker = function() {
   function EventTracker() {
     this.id = null;
@@ -88,7 +89,9 @@ var EventTracker = function() {
     this.capacity = 0;
     this.positions = {};
     this.log = [];
+    this.changed = false;
     this.db_object = null;
+    this.saveTimer = null;
   }
   EventTracker.events = {};
   EventTracker.getEvent = function(id, callback) {
@@ -125,8 +128,11 @@ var EventTracker = function() {
   // Position management
 
   EventTracker.prototype.signupStaffer = function(position_id, staffer_id, staffer_name, socket) {
-    console.log(position_id);
-    this.positions[position_id].addStaffer(staffer_id, staffer_name, socket);
+    if(this.positions[position_id]) {
+      this.positions[position_id].addStaffer(staffer_id, staffer_name, socket);
+    } else {
+      socket.emit('error', 'no position');
+    }
     return this;
   };
 
@@ -139,16 +145,22 @@ var EventTracker = function() {
     }
     return this;
   };
+  
+  EventTracker.prototype.updateSettings = function() {
+    
+  };
 
   // Clicker management
 
   EventTracker.prototype.increment = function(amount) {
     this.counter += amount;
+    this.changed = true;
     this.updateCounter();
     return this;
   };
   EventTracker.prototype.decrement = function(amount) {
     this.counter -= amount;
+    this.changed = true;
     this.updateCounter();
     return this;
   };
@@ -163,33 +175,36 @@ var EventTracker = function() {
   
   EventTracker.prototype.load = function(db_object, callback) {
     var i, l;
-    var position_maxtimestamp = {};
     for(i = 0, l = db_object.positions.length; i < l; i++) {
       var id = db_object.positions[i]._id,
           title = db_object.positions[i].title;
       this.positions[id] = new EventPosition(id, title, this);
-      position_maxtimestamp[id] = 0;
     }
+    var max_timestamp = 0,
+        max_snapshot = null;
     for(i = 0, l = db_object.snapshots.length; i < l; i++) {
-      var timestamp = db_object.snapshots[i].timestamp,
-          position_id = db_object.snapshots[i].position;
-      if(timestamp > position_maxtimestamp[position_id]) {
-        this.positions[position_id].in_counter = db_object.snapshots[i].in_counter;
-        this.positions[position_id].out_counter = db_object.snapshots[i].out_counter;
-        position_maxtimestamp[position_id] = timestamp;
+      var timestamp = db_object.snapshots[i].timestamp;
+      if(timestamp > max_timestamp) {
+        // this.positions[position_id].in_counter = db_object.snapshots[i].in_counter;
+        // this.positions[position_id].out_counter = db_object.snapshots[i].out_counter;
+        max_snapshot = db_object.snapshots[i];
+        max_timestamp = timestamp;
       }
     }
-    var in_counter = 0, out_counter = 0;
-    for(i in this.positions) {
-      in_counter += this.positions[i].in_counter;
-      out_counter += this.positions[i].out_counter;
+    if(max_snapshot) {
+      for(i = 0; i < max_snapshot.positions.length; i++) {
+        var p = max_snapshot.positions[i];
+        this.positions[p.position].in_counter = p.in_counter;
+        this.positions[p.position].out_counter = p.out_counter;
+      }
     }
     this.title = db_object.title;
     this.capacity = db_object.capacity;
-    this.counter = in_counter - out_counter;
+    this.counter = max_snapshot ? max_snapshot.counter : 0;
     this.id = db_object._id;
     this.db_object = db_object;
-    //this.startSaving();
+    this.changed = false;
+    this.startSaving();
     return this;
   };
 
@@ -197,27 +212,43 @@ var EventTracker = function() {
 
   EventTracker.prototype.startSaving = function() {
     var that = this;
-    this.save(function() {
+    if(this.changed) {
+      this.save(function() {
+        that.saveTimer = setTimeout(function() {that.startSaving();}, SAVE_RATE*1000);
+      });
+    } else {
       that.saveTimer = setTimeout(function() {that.startSaving();}, SAVE_RATE*1000);
-    });
+    }
     return this;
   };
   EventTracker.prototype.stopSaving = function() {
-    clearTimeout(this.saveTimer);
+    if(this.saveTimer) {
+      clearTimeout(this.saveTimer);
+    }
     return this;
   };
   EventTracker.prototype.save = function(complete) {
+    var snapshot = {
+      positions: [],
+      counter: this.counter
+    };
     for(var position_id in this.positions) {
-      this.db_object.snapshots.push({
+      snapshot.positions.push({
         position: position_id,
         in_counter: this.positions[position_id].in_counter,
         out_counter: this.positions[position_id].out_counter
       });
     }
+    this.db_object.snapshots.push(snapshot);
     var that = this;
     this.db_object.save(function(err) {
       if(err) {console.log(err);}
-      else {models.Event.find({_id: that.db_object._id}, function(err, result) {console.log("Saving:",result);});}
+      else {
+        models.Event.find({_id: that.db_object._id}, function(err, result) {
+          console.log("Saving:",result);
+        });
+        that.changed = false;
+      }
       if(complete) {complete();}
     });
     return this;
@@ -232,3 +263,4 @@ models.Event.findOne({title: 'Heaven & Hell'}, function(err, doc) {
 });
 
 exports.EventTracker = EventTracker;
+exports.SAVE_RATE = SAVE_RATE;

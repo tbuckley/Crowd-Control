@@ -11,6 +11,7 @@ mongoose.connection.on('open', function() {
 exports.db = db;
 exports.models = {
   Position :  db.model('Position', schemas.Position),
+  PositionSnapshot :  db.model('PositionSnapshot', schemas.PositionSnapshot),
   Snapshot :  db.model('Snapshot', schemas.Snapshot),
   Event :     db.model('Event', schemas.Event),
   User :      db.model('User', schemas.User)

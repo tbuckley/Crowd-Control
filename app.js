@@ -100,8 +100,6 @@ io.sockets.on('connection', function(socket) {
     });
   }, 60 * 1000);
   socket.on('disconnect', function () {
-    console.log('A socket with sessionID ' + hs.sessionID 
-      + ' disconnected!');
     clearInterval(intervalID);
   });
   
