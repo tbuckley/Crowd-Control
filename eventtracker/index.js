@@ -39,9 +39,9 @@ var EventPosition = function() {
     socket.on('decrement', function(amount) {
       that.decrement(staffer_id, amount);
     });
-    // pos.socket.on('disconnect', function() {
-    //   that.deactivatePosition(position_id);
-    // });
+    socket.on('disconnect', function() {
+      that.removeStaffer(staffer_id);
+    });
     
     // Let socket know it's ready
     socket.emit('initialize', {
@@ -54,6 +54,7 @@ var EventPosition = function() {
   EventPosition.prototype.removeStaffer = function(id) {
     delete this.staffers[id];
     this.num_staffers--;
+    this.event.checkStaffers();
   };
   EventPosition.prototype.increment = function(staffer_id, amount) {
     this.in_counter += amount;
@@ -85,6 +86,7 @@ var EventPosition = function() {
 var EventTracker = function() {
   function EventTracker() {
     this.id = null;
+    this.title = "UNKNOWN EVENT";
     this.counter = 0;
     this.capacity = 0;
     this.positions = {};
@@ -101,7 +103,6 @@ var EventTracker = function() {
           var e = new EventTracker();
           e.load(doc);
           e.register();
-          //console.log('Event loaded: ('+e.title+', '+e.capacity+')');
           callback(e);
         } else {
           console.log(err);
@@ -116,10 +117,12 @@ var EventTracker = function() {
   // Event Registration
 
   EventTracker.prototype.register = function() {
+    console.log('Registered event '+this.title);
     EventTracker.events[this.id] = this;
     return this;
   };
   EventTracker.prototype.unregister = function() {
+    console.log('Unregistered event '+this.title);
     delete EventTracker.events[this.id];
     this.stopSaving().save();
     return this;
@@ -135,10 +138,20 @@ var EventTracker = function() {
     }
     return this;
   };
+  
+  EventTracker.prototype.checkStaffers = function() {
+    var total_staffers = 0;
+    for(var position_id in this.positions) {
+      total_staffers += this.positions[position_id].num_staffers;
+    }
+    if(total_staffers === 0) {
+      this.unregister();
+    }
+    return this;
+  };
 
   EventTracker.prototype.updateCounter = function() {
     for(var position_id in this.positions) {
-      console.log("Updating counter for "+position_id);
       this.positions[position_id].sendData('update_counter', {
         counter: this.counter
       });
@@ -147,7 +160,7 @@ var EventTracker = function() {
   };
   
   EventTracker.prototype.updateSettings = function() {
-    
+    return this;
   };
 
   // Clicker management
@@ -173,7 +186,7 @@ var EventTracker = function() {
   
   // Loading
   
-  EventTracker.prototype.load = function(db_object, callback) {
+  EventTracker.prototype.load = function(db_object) {
     var i, l;
     for(i = 0, l = db_object.positions.length; i < l; i++) {
       var id = db_object.positions[i]._id,
@@ -245,7 +258,7 @@ var EventTracker = function() {
       if(err) {console.log(err);}
       else {
         models.Event.find({_id: that.db_object._id}, function(err, result) {
-          console.log("Saving:",result);
+          console.log("Saving "+that.title, snapshot);
         });
         that.changed = false;
       }
@@ -256,11 +269,6 @@ var EventTracker = function() {
   
   return EventTracker;
 }();
-
-models.Event.findOne({title: 'Heaven & Hell'}, function(err, doc) {
-  if(err) {console.log(err);}
-  else {exports.h_h = doc;}
-});
 
 exports.EventTracker = EventTracker;
 exports.SAVE_RATE = SAVE_RATE;
